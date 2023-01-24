@@ -48,27 +48,8 @@ read -e
 [[ "$REPLY" = "I ACCEPT" ]] || return
 fi
 
-#UEFI or legacy firmware
-if [[ ! -z "$1" || ( "$isUEFI" = true && "$unlockMenu" = false ) || "$hasLegacyOption" = false ]]; then
-    useUEFI=true
-else
-    useUEFI=false
-    if [[ "$hasUEFIoption" = true ]]; then
-        echo -e ""
-        echo_yellow "Install UEFI-compatible firmware?"
-        echo -e "UEFI firmware is the preferred option for all OSes.
-Legacy SeaBIOS firmware is deprecated but available for Chromeboxes to enable
-PXE (network boot) capability and compatibility with Legacy OS installations.\n"
-        REPLY=""
-        while [[ "$REPLY" != "U" && "$REPLY" != "u" && "$REPLY" != "L" && "$REPLY" != "l"  ]]
-        do
-            read -ep "Enter 'U' for UEFI, 'L' for Legacy: "
-            if [[ "$REPLY" = "U" || "$REPLY" = "u" ]]; then
-                useUEFI=true
-            fi
-        done
-    fi
-fi
+#Only flash UEFI  firmware
+useUEFI=true
 
 #UEFI notice if flashing from ChromeOS or Legacy
 if [[ "$useUEFI" = true && ! -d /sys/firmware/efi ]]; then
@@ -159,54 +140,6 @@ and you need to recover using an external EEPROM programmer. [Y/n] "
     [ $? -ne 0 ] && return 1
 fi
 
-#headless?
-useHeadless=false
-if [[ $useUEFI = false && ( "$isHswBox" = true || "$isBdwBox" = true ) ]]; then
-    echo -e ""
-    echo_yellow "Install \"headless\" firmware?"
-    read -ep "This is only needed for servers running without a connected display. [y/N] "
-    if [[ "$REPLY" = "Y" || "$REPLY" = "y" ]]; then
-        useHeadless=true
-    fi
-fi
-
-#USB boot priority
-preferUSB=false
-if [[ $useUEFI = false ]]; then
-    echo -e ""
-    echo_yellow "Default to booting from USB?"
-    echo -e "If you default to USB, then any bootable USB device
-will have boot priority over the internal SSD.
-If you default to SSD, you will need to manually select
-the USB Device from the Boot Menu in order to boot it.
-    "
-    REPLY=""
-    while [[ "$REPLY" != "U" && "$REPLY" != "u" && "$REPLY" != "S" && "$REPLY" != "s"  ]]
-    do
-        read -ep "Enter 'U' for USB, 'S' for SSD: "
-        if [[ "$REPLY" = "U" || "$REPLY" = "u" ]]; then
-            preferUSB=true
-        fi
-    done
-fi
-
-#add PXE?
-addPXE=false
-if [[  $useUEFI = false && "$hasLAN" = true ]]; then
-    echo -e ""
-    echo_yellow "Add PXE network booting capability?"
-    read -ep "(This is not needed for by most users) [y/N] "
-    if [[ "$REPLY" = "Y" || "$REPLY" = "y" ]]; then
-        addPXE=true
-        echo -e ""
-        echo_yellow "Boot PXE by default?"
-        read -ep "(will fall back to SSD/USB) [y/N] "
-        if [[ "$REPLY" = "Y" || "$REPLY" = "y" ]]; then
-            pxeDefault=true
-        fi
-    fi
-fi
-
 #download firmware file
 cd /tmp
 echo_yellow "\nDownloading Full ROM firmware\n(${coreboot_file})"
@@ -217,49 +150,10 @@ $CURL -sLO "${firmware_source}${coreboot_file}.sha1"
 sha1sum -c ${coreboot_file}.sha1 --quiet > /dev/null 2>&1
 [[ $? -ne 0 ]] && { exit_red "Firmware download checksum fail; download corrupted, cannot flash."; return 1; }
 
-#preferUSB?
-if [[ "$preferUSB" = true  && $useUEFI = false ]]; then
-	$CURL -sLo bootorder "${cbfs_source}bootorder.usb"
-	if [ $? -ne 0 ]; then
-	    echo_red "Unable to download bootorder file; boot order cannot be changed."
-	else
-	    ${cbfstoolcmd} ${coreboot_file} remove -n bootorder > /dev/null 2>&1
-	    ${cbfstoolcmd} ${coreboot_file} add -n bootorder -f /tmp/bootorder -t raw > /dev/null 2>&1
-	fi
-fi
-
 #persist serial number?
 if [ -f /tmp/serial.txt ]; then
     echo_yellow "Persisting device serial number"
     ${cbfstoolcmd} ${coreboot_file} add -n serial_number -f /tmp/serial.txt -t raw > /dev/null 2>&1
-fi
-
-#useHeadless?
-if [ "$useHeadless" = true  ]; then
-    $CURL -sLO "${cbfs_source}${hswbdw_headless_vbios}"
-    if [ $? -ne 0 ]; then
-        echo_red "Unable to download headless VGA BIOS; headless firmware cannot be installed."
-    else
-        ${cbfstoolcmd} ${coreboot_file} remove -n pci8086,0406.rom > /dev/null 2>&1
-        ${cbfstoolcmd} ${coreboot_file} add -f ${hswbdw_headless_vbios} -n pci8086,0406.rom -t optionrom > /dev/null 2>&1
-    fi
-fi
-
-#addPXE?
-if [ "$addPXE" = true  ]; then
-    $CURL -sLO "${cbfs_source}${pxe_optionrom}"
-    if [ $? -ne 0 ]; then
-        echo_red "Unable to download PXE option ROM; PXE capability cannot be added."
-    else
-        ${cbfstoolcmd} ${coreboot_file} add -f ${pxe_optionrom} -n pci10ec,8168.rom -t optionrom > /dev/null 2>&1
-        #PXE default?
-        if [ "$pxeDefault" = true  ]; then
-            ${cbfstoolcmd} ${coreboot_file} extract -n bootorder -f /tmp/bootorder > /dev/null 2>&1
-            ${cbfstoolcmd} ${coreboot_file} remove -n bootorder > /dev/null 2>&1
-            sed -i '1s/^/\/pci@i0cf8\/pci-bridge@1c\/*@0\n/' /tmp/bootorder
-            ${cbfstoolcmd} ${coreboot_file} add -n bootorder -f /tmp/bootorder -t raw > /dev/null 2>&1
-        fi
-    fi
 fi
 
 #Persist RW_MRC_CACHE UEFI Full ROM firmware
@@ -465,95 +359,9 @@ Connect the USB/SD device which contains the backed-up stock firmware and press 
     fi
     #text spacing
     echo -e ""
-
 else
-	if [[ "$hasShellball" = true ]]; then
-		#download firmware extracted from recovery image
-		echo_yellow "\nThat's ok, I'll download a shellball firmware for you."
-
-		if [ "${boardName^^}" = "PANTHER" ]; then
-			echo -e "Which device do you have?\n"
-			echo "1) Asus CN60 [PANTHER]"
-			echo "2) HP CB1 [ZAKO]"
-			echo "3) Dell 3010 [TRICKY]"
-			echo "4) Acer CXI [MCCLOUD]"
-			echo "5) LG Chromebase [MONROE]"
-			echo ""
-			read -ep "? " fw_num
-			if [[ $fw_num -lt 1 ||  $fw_num -gt 5 ]]; then
-				exit_red "Invalid input - cancelling"
-				return 1
-			fi
-			#confirm menu selection
-			echo -e ""
-			read -ep "Confirm selection number ${fw_num} [y/N] "
-			[[ "$REPLY" = "y" || "$REPLY" = "Y" ]] || { exit_red "User cancelled restoring stock firmware"; return; }
-
-			#download firmware file
-			echo -e ""
-			echo_yellow "Downloading recovery image firmware file"
-			case "$fw_num" in
-				1) _device="panther";
-					;;
-				2) _device="zako";
-					;;
-				3) _device="tricky";
-					;;
-				4) _device="mccloud";
-					;;
-				5) _device="monroe";
-					;;
-			esac
-		else
-			#confirm device detection
-			echo_yellow "Confirm system details:"
-			echo -e "Device: ${deviceDesc}"
-			echo -e "Board Name: ${boardName^^}"
-			echo -e ""
-			read -ep "? [y/N] "
-			if [[ "$REPLY" != "y" && "$REPLY" != "Y" ]]; then
-				exit_red "Device detection failed; unable to restoring stock firmware"
-				return 1
-			fi
-			echo -e ""
-			_device=${boardName,,}
-		fi
-
-		#download shellball ROM
-		echo_yellow "Downloading shellball.${_device}.bin"
-		$CURL -sLo /tmp/stock-firmware.rom ${shellball_source}shellball.${_device}.bin;
-		[[ $? -ne 0 ]] && { exit_red "Error downloading; unable to restore stock firmware."; return 1; }
-
-	else
-		# no shellball available, offer to use recovery image
-        echo_red "\nUnfortunately I don't have a stock firmware available to download for '${boardName^^}' at this time."
-		echo_yellow "Would you like to use one from a ChromeOS recovery image?\n
-This will be a 2GB+ download and take a bit of time depending on your connection"
-		read -ep  "Download and extract firmware from a recovery image? [y/N] "
-		if [[ "$REPLY" = "y" || "$REPLY" = "Y" ]]; then
-			echo_yellow "Sit tight, this will take some time as recovery images are 2GB+"
-			$CURL -LO https://raw.githubusercontent.com/coreboot/coreboot/master/util/chromeos/crosfirmware.sh
-			if ! bash crosfirmware.sh ${boardName,,} ; then
-				exit_red "Downloading/extracting from the recovery image failed"
-				return 1
-			fi
-			mv coreboot-Google_* /tmp/stock-firmware.rom
-			echo_yellow "Stock firmware successfully extracted from ChromeOS recovery image"
-		else
-			exit_red "No stock firmware available to restore"
-			return 1
-		fi
-    fi
-    
-    #extract VPD from current firmware if present
-    if extract_vpd /tmp/bios.bin ; then
-        #merge with recovery image firmware
-        if [ -f /tmp/vpd.bin ]; then
-            echo_yellow "Merging VPD into recovery image firmware"
-            ${cbfstoolcmd} /tmp/stock-firmware.rom write -r RO_VPD -f /tmp/vpd.bin > /dev/null 2>&1
-        fi
-    fi
-    firmware_file=/tmp/stock-firmware.rom
+    exit_red "No stock firmware available to restore"
+	return 1
 fi
 
 #disable software write-protect
