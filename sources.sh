@@ -6,26 +6,11 @@
 export script_date="[2023-01-23]"
 
 #where the stuff is
-export util_source="https://www.mrchromebox.tech/files/util/"
-export rwlegacy_source="https://www.mrchromebox.tech/files/firmware/rw_legacy/"
-export bootstub_source="https://www.mrchromebox.tech/files/firmware/boot_stub/"
 export fullrom_source="https://www.mrchromebox.tech/files/firmware/full_rom/"
+export util_source="https://www.mrchromebox.tech/files/util/"
 export shellball_source="https://www.mrchromebox.tech/files/firmware/shellball/"
 export cbfs_source="https://www.mrchromebox.tech/files/firmware/cbfs/"
 export other_source="https://www.mrchromebox.tech/files/firmware/other/"
-
-#LE sources
-export LE_url_official="http://releases.libreelec.tv/"
-export LE_url=${LE_url_official}
-export chrx_url="https://chrx.org/go"
-
-#LE version
-export LE_version_base="LibreELEC-Generic.x86_64"
-export LE_version_stable="10.0.1"
-export LE_version_latest="10.0.1"
-
-#syslinux version
-export syslinux_version="syslinux-6.04-pre1"
 
 #UEFI Full ROMs
 #SNB/IVB
@@ -205,32 +190,6 @@ export coreboot_uefi_voxel="coreboot_tiano-voxel-mrchromebox_20230123.rom"
 export coreboot_uefi_bugzzy="coreboot_tiano-bugzzy-mrchromebox_20230123.rom"
 export coreboot_uefi_lantis="coreboot_tiano-lantis-mrchromebox_20230123.rom"
 export coreboot_uefi_magpie="coreboot_tiano-magpie-mrchromebox_20230123.rom"
-
-
-#RW_LEGACY payloads
-export seabios_link="seabios-link-mrchromebox_20180912.bin"
-export seabios_hswbdw_box="seabios-hswbdw_box-mrchromebox_20180912.bin"
-export seabios_hswbdw_book="seabios-hswbdw_book-mrchromebox_20180912.bin"
-export seabios_baytrail="seabios-byt-mrchromebox_20180912.bin"
-export seabios_braswell="seabios-bsw-mrchromebox_20180912.bin"
-export seabios_skylake="seabios-skl-mrchromebox_20180912.bin"
-export seabios_apl="seabios-apl-mrchromebox_20180912.bin"
-export seabios_kbl="seabios-kbl-mrchromebox_20200223.bin"
-export seabios_kbl_18="seabios-kbl_18-mrchromebox_20200223.bin"
-export rwl_altfw_stoney="rwl_altfw_stoney-mrchromebox_20200107.bin"
-export rwl_altfw_whl="rwl_altfw_whl-mrchromebox_20201017.bin"
-export rwl_altfw_cml="rwl_altfw_cml-mrchromebox_20210415.bin"
-export rwl_altfw_drallion="rwl_altfw_drallion-mrchromebox_20221019.bin"
-export rwl_altfw_glk="rwl_altfw_glk-mrchromebox_20230110.bin"
-export rwl_altfw_jsl="rwl_altfw_jsl-mrchromebox_20211115.bin"
-export rwl_altfw_zen2="rwl_altfw_zen2-mrchromebox_20210623.bin"
-export rwl_altfw_tgl="rwl_altfw_tgl-mrchromebox_20210827.bin"
-
-#hsw/bdw headless VBIOS
-export hswbdw_headless_vbios="hswbdw_vgabios_1040_cbox_headless.dat"
-
-#PXE ROM for Chromeboxes w/RTL81xx ethernet
-export pxe_optionrom="10ec8168.rom"
 
 #Non-ChromeOS devices
 export coreboot_uefi_librem13v1="coreboot_tiano-librem13v1-mrchromebox_20230123.rom"
