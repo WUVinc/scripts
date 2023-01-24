@@ -189,16 +189,5 @@ export coreboot_uefi_bugzzy="coreboot_tiano-bugzzy-WUV.MrC_20230123.rom"
 export coreboot_uefi_lantis="coreboot_tiano-lantis-WUV.MrC_20230123.rom"
 export coreboot_uefi_magpie="coreboot_tiano-magpie-WUV.MrC_20230123.rom"
 
-#Non-ChromeOS devices
-export coreboot_uefi_librem13v1="coreboot_tiano-librem13v1-WUV.MrC_20230123.rom"
-export coreboot_uefi_librem13v2="coreboot_tiano-librem13v2-WUV.MrC_20230123.rom"
-export coreboot_uefi_librem13v4="coreboot_tiano-librem13v4-WUV.MrC_20230123.rom"
-export coreboot_uefi_librem15v2="coreboot_tiano-librem15v2-WUV.MrC_20230123.rom"
-export coreboot_uefi_librem15v3="coreboot_tiano-librem15v3-WUV.MrC_20230123.rom"
-export coreboot_uefi_librem15v4="coreboot_tiano-librem15v4-WUV.MrC_20230123.rom"
-export coreboot_uefi_librem_mini="coreboot_tiano-librem_mini-WUV.MrC_20230123.rom"
-export coreboot_uefi_librem_mini_v2="coreboot_tiano-librem_mini_v2-WUV.MrC_20230123.rom"
-export coreboot_uefi_librem_14="coreboot_tiano-librem_14-WUV.MrC_20230123.rom"
-
 # other
 export touchpad_eve_fw="rose_v1.1.8546-ee1861e9e.bin"

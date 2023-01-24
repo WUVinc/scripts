@@ -73,8 +73,6 @@ kbl_rwl_20=('akali' 'bard' 'ekko' 'eve' 'nami' 'nautilus' \
     'pantheon' 'sona' 'soraka' 'syndra' 'vayne')
 kbl_rwl_18=('atlas' 'karma' 'leona' 'nocturne' 'rammus' 'shyvana')
 kbl=($(printf "%s " "${kbl_boxes[@]}" "${kbl_rwl_20[@]}" "${kbl_rwl_18[@]}"))
-purism=('librem13v1' 'librem13v2' 'librem13v4' 'librem15v2' 'librem15v3' 'librem15v4' \
-        'librem_mini' 'librem_mini_v2' 'librem_14');
 glk=('ampton' 'apel' 'bloog' 'blooglet' 'blooguard' 'blorb' 'bluebird' 'bobba' \
     'bobba360' 'casta' 'dood' 'droid' 'dorp' 'fleex' 'foob' 'foob360' 'garg' \
 	'garg360' 'garfour' 'glk' 'glk360' 'grabbiter' 'laser' 'laser14' 'lick' \
@@ -98,7 +96,7 @@ adl=('brya' 'banshee')
 
 UEFI_ROMS=($(printf "%s " "${hsw_boxes[@]}" "${hsw_books[@]}" "${bdw_boxes[@]}" \
     "${bdw_books[@]}" "${baytrail[@]}" "${snb_ivb[@]}" "${braswell[@]}" \
-    "${skylake[@]}" "${kbl[@]}" "${purism[@]}" "${str[@]}" "${cml[@]}" \
+    "${skylake[@]}" "${kbl[@]}" "${str[@]}" "${cml[@]}" \
     "${glk[@]}" "${apl[@]}" "${tgl[@]}" 'bugzzy' 'lantis' 'magpie' ))
 shellballs=($(printf "%s " \
     "${skylake[@]}" 'atlas' 'eve' 'nautilus' 'nocturne' 'pantheon' 'sona' 'soraka' \
@@ -628,23 +626,6 @@ case "${_hwid}" in
     LEONA*)                 _x='KBL|Asus Chromebook C425TA' ;;
     LEON*)                  _x='HSW|Toshiba CB30/CB35 Chromebook' ;;
     LIARA*)                 _x='STR|Lenovo 14e Chromebook' ;;
-    LIBREM_13_V1)           _x='BDW|Purism Librem 13 v1' ; device="librem13v1";;
-    LIBREM13V1)             _x='BDW|Purism Librem 13 v1' ;;
-    LIBREM_13_V2)           _x='SKL|Purism Librem 13 v2' ; device="librem13v2";;
-    LIBREM13V2)             _x='SKL|Purism Librem 13 v2' ;;
-    LIBREM_13_V3)           _x='SKL|Purism Librem 13 v3' ; device="librem13v2";;
-    LIBREM13V3)             _x='SKL|Purism Librem 13 v3' ;;
-    LIBREM_13_V4)           _x='KBL|Purism Librem 13 v4' ; device="librem13v4";;
-    LIBREM13V4)             _x='KBL|Purism Librem 13 v4' ;;
-    LIBREM_14)              _x='CML|Purism Librem 14' ; device="librem_14";;
-    LIBREM_15_V2)           _x='BDW|Purism Librem 15 v2' ; device="librem15v2";;
-    LIBREM15V2)             _x='BDW|Purism Librem 15 v2' ;;
-    LIBREM_15_V3)           _x='SKL|Purism Librem 15 v3' ; device="librem15v3";;
-    LIBREM15V3)             _x='SKL|Purism Librem 15 v3' ;;
-    LIBREM_15_V4)           _x='KBL|Purism Librem 15 v4' ; device="librem15v4";;
-    LIBREM15V4)             _x='KBL|Purism Librem 15 v4' ;;
-    LIBREM_MINI)            _x='WHL|Purism Librem Mini' ; device="librem_mini";;
-    LIBREM_MINI_V2)         _x='CML|Purism Librem Mini v2' ; device="librem_mini_v2";;
     LICK*)                  _x='GLK|Lenovo Ideapad 3 Chromebook' ;;
     LILLIPUP*)              _x='TGL|Lenovo IdeaPad Flex 5i Chromebook' ; device="lillipup";;
     LINDAR-EDFZ*)           _x='TGL|Lenovo 5i-14 Chromebook' ; device="lindar";;
