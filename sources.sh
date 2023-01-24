@@ -6,7 +6,7 @@
 export script_date="[2023-01-23]"
 
 #where the stuff is
-export fullrom_source="https://www.mrchromebox.tech/files/firmware/full_rom/"
+export fullrom_source="https://chromebios.wuv.cloud/files/firmware/full_rom/"
 export util_source="https://www.mrchromebox.tech/files/util/"
 export shellball_source="https://www.mrchromebox.tech/files/firmware/shellball/"
 export cbfs_source="https://www.mrchromebox.tech/files/firmware/cbfs/"
