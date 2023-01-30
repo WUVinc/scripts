@@ -1,3 +1,1 @@
-Home of the ChromeOS Firmware Utility script and Kodi E-Z Setup script.
-
-For home info, please visit https://mrchromebox.tech
+A fork of MrChromebox's ChromeOS Firmware Utility script for flashing WUV's customized Chromebook firmware
