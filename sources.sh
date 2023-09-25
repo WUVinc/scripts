@@ -169,25 +169,5 @@ export coreboot_uefi_nightfury="coreboot_tiano-nightfury-WUV.MrC_20230130.rom"
 export coreboot_uefi_noibat="coreboot_tiano-noibat-WUV.MrC_20230130.rom"
 export coreboot_uefi_wyvern="coreboot_tiano-wyvern-WUV.MrC_20230130.rom"
 
-#Tigerlake
-export coreboot_uefi_chronicler="coreboot_tiano-chronicler-WUV.MrC_20230130.rom"
-export coreboot_uefi_collis="coreboot_tiano-collis-WUV.MrC_20230130.rom"
-export coreboot_uefi_copano="coreboot_tiano-copano-WUV.MrC_20230130.rom"
-export coreboot_uefi_delbin="coreboot_tiano-delbin-WUV.MrC_20230130.rom"
-export coreboot_uefi_drobit="coreboot_tiano-drobit-WUV.MrC_20230130.rom"
-export coreboot_uefi_eldrid="coreboot_tiano-eldrid-WUV.MrC_20230130.rom"
-export coreboot_uefi_elemi="coreboot_tiano-elemi-WUV.MrC_20230130.rom"
-export coreboot_uefi_lillipup="coreboot_tiano-lillipup-WUV.MrC_20230130.rom"
-export coreboot_uefi_lindar="coreboot_tiano-lindar-WUV.MrC_20230130.rom"
-export coreboot_uefi_voema="coreboot_tiano-voema-WUV.MrC_20230130.rom"
-export coreboot_uefi_volet="coreboot_tiano-volet-WUV.MrC_20230130.rom"
-export coreboot_uefi_volta="coreboot_tiano-volta-WUV.MrC_20230130.rom"
-export coreboot_uefi_voxel="coreboot_tiano-voxel-WUV.MrC_20230130.rom"
-
-#Jasperlake
-export coreboot_uefi_bugzzy="coreboot_tiano-bugzzy-WUV.MrC_20230130.rom"
-export coreboot_uefi_lantis="coreboot_tiano-lantis-WUV.MrC_20230130.rom"
-export coreboot_uefi_magpie="coreboot_tiano-magpie-WUV.MrC_20230130.rom"
-
 # other
 export touchpad_eve_fw="rose_v1.1.8546-ee1861e9e.bin"
